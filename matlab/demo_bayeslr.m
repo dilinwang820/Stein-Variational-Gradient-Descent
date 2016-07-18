@@ -28,7 +28,7 @@ n_train = length(train_idx); n_test = length(test_idx);
 % example of bayesian logistic regression
 batchsize = 100; % subsampled mini-batch size
 a0 = 1; b0 = .01; % hyper-parameters
-dlog_p = @(theta, X, y) dlog_p_lr(theta, X, y, batchsize, a0, b0); % returns the first order derivative of the posterior distribution 
+dlog_p  = @(theta)dlog_p(theta, X_train, y_train); % returns the first order derivative of the posterior distribution 
 
 % initlization for particles using the prior distribution
 alpha0 = gamrnd(a0, b0, M, 1); theta0 = zeros(M, D);
@@ -36,14 +36,12 @@ for i = 1:M
     theta0(i,:) = [normrnd(0, sqrt((1/alpha0(i))), 1, d), log(alpha0(i))]; % w and log(alpha)
 end
 
-% our variational gradient descent algorithm
+% our variational gradient descent algorithm %
 
 % Searching best master_stepsize using a development set
-% master_stepsize = cv_search_stepsize(X_train, y_train, theta0, dlog_p);
 master_stepsize = 0.05;  
 
 tic
-dlog_p  = @(theta)dlog_p(theta, X_train, y_train); % fix training set
 theta_vgd = vgd(theta0, dlog_p, max_iter, master_stepsize);
 time = toc;
 

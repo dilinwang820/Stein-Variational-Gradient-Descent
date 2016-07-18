@@ -1,4 +1,5 @@
 function  theta = vgd(theta0, dlog_p, max_iter, master_stepsize, h, auto_corr, method)
+
 %%%%%%%%
 % Bayesian Inference via Variational Gradient Descent
 
