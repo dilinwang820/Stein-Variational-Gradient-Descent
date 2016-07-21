@@ -5,6 +5,8 @@ There are folders "matlab" and "python" containing implementations of the code i
   --Matlab code contains an example of Bayesian Logistic Regression 
   --Python code is used to reproduce our table for the example of Bayesian neural network.
 
+## Introduction
+VGD is a general purpose variational inference algorithm that forms a natural counterpart of gradient descent for optimization. VGD iteratively transports a set of particles to match with the target distribution, by applying a form of functional gradient descent that minimizes the KL divergence.
 
 ## Getting Started
   --Our python code is based on Theano 0.8.2
