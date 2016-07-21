@@ -3,6 +3,8 @@ VGD is a general purpose variational inference algorithm that forms a natural co
 
 The package contains implementation of VGD in both Matlab and Python language. Demos are also provided to reproduce the results in our paper. The Bayesian neural network example is based on Theano 0.8.2.
 
+For more information, please visit our project website. [VGD](http://www.cs.dartmouth.edu/~dartml/project.html)
+
 ## Basic Usage
 //TODO
 
