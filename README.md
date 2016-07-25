@@ -5,6 +5,10 @@ The package contains implementation of VGD in both Matlab and Python language. D
 
 For more information, please visit our project website. [VGD](http://www.cs.dartmouth.edu/~dartml/project.html)
 
+## Toy example on 1D Gaussian Mixture
+Toy example with 1D Gaussian mixture. The red dashed lines are the target density function and the solid green lines are the densities of the particles at different iterations of our algorithm (estimated using kernel density estimator).
+<img src="http://cs.dartmouth.edu/~dartml/1dgmm.gif" width="100%">
+
 ## Basic Usage
 //TODO
 
