@@ -10,7 +10,9 @@ Toy example with 1D Gaussian mixture. The red dashed lines are the target densit
 <img src="http://cs.dartmouth.edu/~dartml/1dgmm.gif" width="100%">
 
 ## Basic Usage
+```python
 //TODO
+```
 
 ## Citation
 //TO APPEAR
