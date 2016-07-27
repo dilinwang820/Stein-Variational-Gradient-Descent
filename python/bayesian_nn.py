@@ -263,6 +263,7 @@ if __name__ == '__main__':
     
     print 'Theano', theano.version.version    #our implementation is based on theano 0.8.2
                
+    np.random.seed(1)
     ''' load data file '''
     data = np.loadtxt('../data/boston_housing')
     
