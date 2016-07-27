@@ -16,7 +16,7 @@ Toy example with 1D Gaussian mixture. The red dashed lines are the target densit
   x0: initial particles
   dlnprob: returns first order derivative of log probability
   n_iter: number of iterations
-  stepsize: initial leanring rate 
+  stepsize: initial learning rate 
 '''
 theta = VGD().update(x0, dlnprob, n_iter, stepsize)
 ```
