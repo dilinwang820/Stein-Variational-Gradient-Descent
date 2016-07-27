@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.spatial.distance import pdist
 from scipy.spatial.distance import pdist, squareform
 
 class VGD():
@@ -8,7 +7,6 @@ class VGD():
         pass
     
     def vgd_kernel(self, theta, h = -1):
-
         sq_dist = pdist(theta)
         pairwise_dists = squareform(sq_dist)**2
         if h < 0: # if h < 0, using median trick
@@ -16,7 +14,6 @@ class VGD():
             h = np.sqrt(0.5 * h / np.log(theta.shape[0]+1))
 
         # compute the rbf kernel
-        
         Kxy = np.exp( -pairwise_dists / h**2 / 2)
 
         dxkxy = -np.matmul(Kxy, theta)
@@ -34,16 +31,14 @@ class VGD():
         
         theta = np.copy(x0) 
         
+        # adagrad with momentum
         fudge_factor = 1e-6
         historical_grad = 0
-            
         for iter in range(n_iter):
             if debug and (iter+1) % 1000 == 0:
                 print 'iter ' + str(iter+1) 
-            # adagrad with momentum
             
             lnpgrad = lnprob(theta)
-                
             # calculating the kernel matrix
             kxy, dxkxy = self.vgd_kernel(theta, h = -1)  
             grad_theta = (np.matmul(kxy, lnpgrad) + dxkxy) / x0.shape[0]  
