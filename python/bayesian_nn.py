@@ -132,17 +132,14 @@ class vgd_bayesnn:
                 grad_theta[i,:] = self.pack_weights(dw1, db1, dw2, db2, dloggamma, dloglambda)
                 
             # calculating the kernel matrix
-            kxy, dxkxy = self.vgd_kernel(h = -1)  
+            kxy, dxkxy = self.vgd_kernel(h=-1)  
             grad_theta = (np.matmul(kxy, grad_theta) + dxkxy) / self.M   # \Phi(x)
             
             # adagrad 
-            if historical_grad == 0:
-                historical_grad = historical_grad + np.multiply(grad_theta,grad_theta)
+            if iter == 0:
+                historical_grad = historical_grad + np.multiply(grad_theta, grad_theta)
             else:
-                #Caffe's implementation of SGD with momentum: v := momentum*v + lr*g
-                #historical_grad = auto_corr * historical_grad + np.multiply(grad_theta,grad_theta)
-                #Default implementation
-                historical_grad = auto_corr * historical_grad + (1 - auto_corr) * np.multiply(grad_theta,grad_theta)
+                historical_grad = auto_corr * historical_grad + (1 - auto_corr) * np.multiply(grad_theta, grad_theta)
             adj_grad = np.divide(grad_theta, fudge_factor+np.sqrt(historical_grad))
             self.theta = self.theta + master_stepsize * adj_grad 
 
@@ -224,7 +221,7 @@ class vgd_bayesnn:
         b1 = w[self.d*self.n_hidden:(self.d+1)*self.n_hidden]
     
         w = w[(self.d+1)*self.n_hidden:]
-        w2,b2 = w[:self.n_hidden], w[-3] 
+        w2, b2 = w[:self.n_hidden], w[-3] 
         
         # the last two parameters are log variance
         loggamma, loglambda= w[-2], w[-1]
@@ -265,50 +262,30 @@ class vgd_bayesnn:
 if __name__ == '__main__':
     
     print 'Theano', theano.version.version    #our implementation is based on theano 0.8.2
-    
+               
     ''' load data file '''
-    datasets = ['boston_housing', 'concrete_compression_strength', 'energy_efficiency', 'kin8nm', 'naval_propulsion', 'combined_cycle_power_plant', 'protein_structure', 'wine_quality_red', 'yacht_hydrodynamics', 'year_prediction_msd']
-    ''' A simple principal to improve the performances is to set a larger `max_iter` '''
-    n_loop = [2000, 4000, 3000, 6000, 6000, 10000, 8000, 3000, 4000, 8000]  
+    data = np.loadtxt('../data/boston_housing')
     
-    for datafile, max_iter in zip(datasets, n_loop):
-        epochs = 20
-        n_hidden = 50
-        batch_size = 100
-        
-        if datafile == 'protein_structure':
-            n_hidden = 100
-            epochs = 5
-            
-        if datafile == 'year_prediction_msd':
-            n_hidden = 100
-            batch_size = 1000
-            epochs = 1
-            
-        data = np.loadtxt('/Users/Dilin/Dropbox/nips_stein/VGD/python/data/'+datafile)
-
-        # Please make sure that the last column is the label and the other columns are features
-        X_input = data[ :, range(data.shape[ 1 ] - 1) ]
-        y_input = data[ :, data.shape[ 1 ] - 1 ]
-        
-        for i in range(epochs):
-            ''' build the training and testing data set'''
-            train_ratio = 0.9 # We create the train and test sets with 90% and 10% of the data
-            random.seed(i)  # to reproduce our results
-            np.random.seed(i) 
-            permutation = np.arange(X_input.shape[0])
-            random.shuffle(permutation) 
-            
-            size_train = int(np.round(X_input.shape[ 0 ] * train_ratio))
-            index_train = permutation[ 0 : size_train]
-            index_test = permutation[ size_train : ]
-            
-            X_train, y_train = X_input[ index_train, : ], y_input[ index_train ]
-            X_test, y_test = X_input[ index_test, : ], y_input[ index_test ]
-            
-            start = time.time()
-            ''' Training Bayesian neural network with VGD '''
-            vgd = vgd_bayesnn(X_train, y_train, batch_size = batch_size, n_hidden = n_hidden, max_iter = max_iter)
-            vgd_time = time.time() - start
-            vgd_rmse, vgd_ll = vgd.evaluation(X_test, y_test)
-            print 'VGD', datafile, vgd_rmse, vgd_ll, vgd_time
+    # Please make sure that the last column is the label and the other columns are features
+    X_input = data[ :, range(data.shape[ 1 ] - 1) ]
+    y_input = data[ :, data.shape[ 1 ] - 1 ]
+    
+    ''' build the training and testing data set'''
+    train_ratio = 0.9 # We create the train and test sets with 90% and 10% of the data
+    permutation = np.arange(X_input.shape[0])
+    random.shuffle(permutation) 
+    
+    size_train = int(np.round(X_input.shape[ 0 ] * train_ratio))
+    index_train = permutation[ 0 : size_train]
+    index_test = permutation[ size_train : ]
+    
+    X_train, y_train = X_input[ index_train, : ], y_input[ index_train ]
+    X_test, y_test = X_input[ index_test, : ], y_input[ index_test ]
+    
+    start = time.time()
+    ''' Training Bayesian neural network with VGD '''
+    batch_size, n_hidden, max_iter = 100, 50, 2000
+    vgd = vgd_bayesnn(X_train, y_train, batch_size = batch_size, n_hidden = n_hidden, max_iter = max_iter)
+    vgd_time = time.time() - start
+    vgd_rmse, vgd_ll = vgd.evaluation(X_test, y_test)
+    print 'VGD', vgd_rmse, vgd_ll, vgd_time 
