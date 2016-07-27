@@ -1,8 +1,7 @@
 import theano.tensor as T
 import theano
 import numpy as np
-from sklearn.metrics.pairwise import rbf_kernel
-from scipy.spatial.distance import pdist
+from scipy.spatial.distance import pdist, squareform
 import random
 import time
 
@@ -192,21 +191,22 @@ class vgd_bayesnn:
         Calculate kernel matrix and its gradient: K, \nabla_x k
     ''' 
     def vgd_kernel(self, h = -1):
-        if h == -1:
-            #median distance trick
-            sq_dist = pdist(self.theta)
-            h = np.median(np.concatenate((sq_dist, np.zeros(int(self.M/2)))))  # and few zeros
-            h = np.sqrt(0.5*h**2 / np.log(self.theta.shape[0]+1))
-        
+        sq_dist = pdist(self.theta)
+        pairwise_dists = squareform(sq_dist)**2
+        if h < 0: # if h < 0, using median trick
+            h = np.median(pairwise_dists)  
+            h = np.sqrt(0.5 * h / np.log(self.theta.shape[0]+1))
+
         # compute the rbf kernel
-        kxy = rbf_kernel(self.theta, self.theta, 1 / (2*h**2)) # gamma for rbf kernel
         
-        dxkxy = -np.matmul(kxy, self.theta)
-        sumkxy = np.sum(kxy, axis=1)
+        Kxy = np.exp( -pairwise_dists / h**2 / 2)
+
+        dxkxy = -np.matmul(Kxy, self.theta)
+        sumkxy = np.sum(Kxy, axis=1)
         for i in range(self.theta.shape[1]):
             dxkxy[:, i] = dxkxy[:,i] + np.multiply(self.theta[:,i],sumkxy)
         dxkxy = dxkxy / (h**2)
-        return (kxy, dxkxy)
+        return (Kxy, dxkxy)
     
     
     '''
@@ -286,7 +286,7 @@ if __name__ == '__main__':
             batch_size = 1000
             epochs = 1
             
-        data = np.loadtxt('data/'+datafile)
+        data = np.loadtxt('/Users/Dilin/Dropbox/nips_stein/VGD/python/data/'+datafile)
 
         # Please make sure that the last column is the label and the other columns are features
         X_input = data[ :, range(data.shape[ 1 ] - 1) ]
