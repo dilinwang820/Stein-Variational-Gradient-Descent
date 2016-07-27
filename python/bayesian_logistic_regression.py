@@ -2,9 +2,18 @@ import numpy as np
 import scipy.io
 from sklearn.cross_validation import train_test_split
 import numpy.matlib as nm
-
 from vgd import VGD
 
+'''
+    Example of Bayesian Logistic Regression (the same setting as Gershman et al. 2012):
+    The observed data D = {X, y} consist of N binary class labels, 
+    y_t \in {-1,+1}, and d covariates for each datapoint, X_t \in R^d.
+    The hidden variables \theta = {w, \alpha} consist of d regression coefficients w_k \in R,
+    and a precision parameter \alpha \in R_+. We assume the following model:
+        p(\alpha) = Gamma(\alpha; a, b)
+        p(w_k | a) = N(w_k; 0, \alpha^-1)
+        p(y_t = 1| x_t, w) = 1 / (1+exp(-w^T x_t))
+'''
 class BayesianLR:
     def __init__(self, X, Y, batchsize=100, a0=1, b0=0.01):
         self.X, self.Y = X, Y
@@ -16,6 +25,7 @@ class BayesianLR:
         self.permutation = np.random.permutation(self.N)
         self.iter = 0
     
+        
     def dlnprob(self, theta):
         
         if self.batchsize > 0:
@@ -35,7 +45,6 @@ class BayesianLR:
         wt = np.multiply((alpha / 2), np.sum(w ** 2, axis=1))
         
         coff = np.matmul(Xs, w.T)
-        coff[coff < -50] = -50
         y_hat = 1.0 / (1.0 + np.exp(-1 * coff))
         
         dw_data = np.matmul(((nm.repmat(np.vstack(Ys), 1, theta.shape[0]) + 1) / 2.0 - y_hat).T, Xs)  # Y \in {-1,1}
@@ -58,11 +67,10 @@ class BayesianLR:
         prob = np.mean(prob, axis=1)
         acc = np.mean(prob > 0.5)
         llh = np.mean(np.log(prob))
-        
         return [acc, llh]
-    
+
 if __name__ == '__main__':
-    data = scipy.io.loadmat('/Users/Dilin/Dropbox/nips_stein/data/covtype.mat')
+    data = scipy.io.loadmat('../data/covertype.mat')
     
     X_input = data['covtype'][:, 1:]
     y_input = data['covtype'][:, 0]
@@ -74,18 +82,15 @@ if __name__ == '__main__':
     D = d + 1
     
     # split the dataset into training and testing
-    X_train, X_test, y_train, y_test = train_test_split(X_input, y_input, test_size=0.2)
-
-    a0, b0 = 1, 0.01
-    model = BayesianLR(X_train, y_train, 100, a0, b0)
+    X_train, X_test, y_train, y_test = train_test_split(X_input, y_input, test_size=0.2, random_state=42)
     
-    print X_train.shape
-    print X_test.shape
+    a0, b0 = 1, 0.01 #hyper-parameters
+    model = BayesianLR(X_train, y_train, 100, a0, b0) # batchsize = 100
+    
     # initialization
     M = 100  # number of particles
     theta0 = np.zeros([M, D]);
     alpha0 = np.random.gamma(a0, b0, M); 
-    
     for i in range(M):
         theta0[i, :] = np.hstack([np.random.normal(0, np.sqrt(1 / alpha0[i]), d), np.log(alpha0[i])])
     

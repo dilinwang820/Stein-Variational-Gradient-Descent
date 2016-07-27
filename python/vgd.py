@@ -33,12 +33,14 @@ class VGD():
             raise ValueError('x0 or lnprob cannot be None!')
         
         theta = np.copy(x0) 
+        
+        fudge_factor = 1e-6
+        historical_grad = 0
+            
         for iter in range(n_iter):
             if debug and (iter+1) % 1000 == 0:
                 print 'iter ' + str(iter+1) 
             # adagrad with momentum
-            fudge_factor = 1e-6
-            historical_grad = 0
             
             lnpgrad = lnprob(theta)
                 
@@ -47,7 +49,7 @@ class VGD():
             grad_theta = (np.matmul(kxy, lnpgrad) + dxkxy) / x0.shape[0]  
             
             # adagrad 
-            if historical_grad == 0:
+            if iter == 0:
                 historical_grad = historical_grad + grad_theta ** 2
             else:
                 historical_grad = alpha * historical_grad + (1 - alpha) * (grad_theta ** 2)

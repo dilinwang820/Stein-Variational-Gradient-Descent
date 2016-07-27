@@ -120,11 +120,10 @@ class vgd_bayesnn:
             self.theta[i,:] = self.pack_weights(w1, b1, w2, b2, loggamma, loglambda)
 
         grad_theta = np.zeros([self.M, num_vars])  # gradient 
+        # adagrad with momentum
+        fudge_factor = 1e-6
+        historical_grad = 0
         for iter in range(max_iter):
-            # adagrad with momentum
-            fudge_factor = 1e-6
-            historical_grad = 0
-            
             # sub-sampling
             batch = [ i % N0 for i in range(iter * batch_size, (iter + 1) * batch_size) ]
             for i in range(self.M):

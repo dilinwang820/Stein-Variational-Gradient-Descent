@@ -17,7 +17,6 @@ if __name__ == '__main__':
     model = MVN(mu, A)
     
     x0 = np.random.normal(0,1, [10,2]);
-    #x0 = np.array([[-0.2870, 0.7716],[0.3683, 1.5184],[-0.2933,0.8799]]);
     theta = VGD().update(x0, model.dlnprob, n_iter=1000, stepsize=0.01)
     
     print np.mean(theta,axis=0)
