@@ -285,7 +285,7 @@ if __name__ == '__main__':
     
     start = time.time()
     ''' Training Bayesian neural network with VGD '''
-    batch_size, n_hidden, max_iter = 100, 50, 2000
+    batch_size, n_hidden, max_iter = 100, 50, 2000  # max_iter is a trade-off between running time and performance
     vgd = vgd_bayesnn(X_train, y_train, batch_size = batch_size, n_hidden = n_hidden, max_iter = max_iter)
     vgd_time = time.time() - start
     vgd_rmse, vgd_ll = vgd.evaluation(X_test, y_test)
