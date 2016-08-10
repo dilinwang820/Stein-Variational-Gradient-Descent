@@ -1,9 +1,9 @@
 # Variational Gradient Descent (VGD)
 VGD is a general purpose variational inference algorithm that forms a natural counterpart of gradient descent for optimization. VGD iteratively transports a set of particles to match with the target distribution, by applying a form of functional gradient descent that minimizes the KL divergence.
 
-The package contains implementation of VGD in both Matlab and Python language. Demos are also provided to reproduce the results in our paper. The Bayesian neural network example is based on Theano 0.8.2.
+The package contains implementation of VGD in both Matlab and Python language. Demos are also provided to reproduce the results in our paper. The Bayesian neural network example is based on [Theano](http://deeplearning.net/software/theano/).
 
-For more information, please visit our project website [VGD](http://www.cs.dartmouth.edu/~dartml/project.html?p=vgd).
+For more information, please visit our project website - [VGD](http://www.cs.dartmouth.edu/~dartml/project.html?p=vgd).
 
 ## Toy example on 1D Gaussian Mixture
 Toy example with 1D Gaussian mixture. The red dashed lines are the target density function and the solid green lines are the densities of the particles at different iterations of our algorithm (estimated using kernel density estimator).
