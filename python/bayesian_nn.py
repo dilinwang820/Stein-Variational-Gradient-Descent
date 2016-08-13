@@ -23,7 +23,7 @@ import time
     All rights reserved.
 '''
 
-class vgd_bayesnn:
+class svgd_bayesnn:
 
     '''
         We define a one-hidden-layer-neural-network specifically. We leave extension of deep neural network as our future work.
@@ -103,7 +103,7 @@ class vgd_bayesnn:
         self.nn_predict = theano.function(inputs = [X, w_1, b_1, w_2, b_2], outputs = prediction)
         
         '''
-            Training with VGD
+            Training with SVGD
         '''
         # normalization
         X_train, y_train = self.normalization(X_train, y_train)
@@ -132,7 +132,7 @@ class vgd_bayesnn:
                 grad_theta[i,:] = self.pack_weights(dw1, db1, dw2, db2, dloggamma, dloglambda)
                 
             # calculating the kernel matrix
-            kxy, dxkxy = self.vgd_kernel(h=-1)  
+            kxy, dxkxy = self.svgd_kernel(h=-1)  
             grad_theta = (np.matmul(kxy, grad_theta) + dxkxy) / self.M   # \Phi(x)
             
             # adagrad 
@@ -186,7 +186,7 @@ class vgd_bayesnn:
     '''
         Calculate kernel matrix and its gradient: K, \nabla_x k
     ''' 
-    def vgd_kernel(self, h = -1):
+    def svgd_kernel(self, h = -1):
         sq_dist = pdist(self.theta)
         pairwise_dists = squareform(sq_dist)**2
         if h < 0: # if h < 0, using median trick
@@ -253,10 +253,10 @@ class vgd_bayesnn:
         pred = np.mean(pred_y_test, axis=0)
         
         # evaluation
-        vgd_rmse = np.sqrt(np.mean((pred - y_test)**2))
-        vgd_ll = np.mean(np.log(np.mean(prob, axis = 0)))
+        svgd_rmse = np.sqrt(np.mean((pred - y_test)**2))
+        svgd_ll = np.mean(np.log(np.mean(prob, axis = 0)))
         
-        return (vgd_rmse, vgd_ll)
+        return (svgd_rmse, svgd_ll)
 
 
 if __name__ == '__main__':
@@ -284,9 +284,9 @@ if __name__ == '__main__':
     X_test, y_test = X_input[ index_test, : ], y_input[ index_test ]
     
     start = time.time()
-    ''' Training Bayesian neural network with VGD '''
+    ''' Training Bayesian neural network with SVGD '''
     batch_size, n_hidden, max_iter = 100, 50, 2000  # max_iter is a trade-off between running time and performance
-    vgd = vgd_bayesnn(X_train, y_train, batch_size = batch_size, n_hidden = n_hidden, max_iter = max_iter)
-    vgd_time = time.time() - start
-    vgd_rmse, vgd_ll = vgd.evaluation(X_test, y_test)
-    print 'VGD', vgd_rmse, vgd_ll, vgd_time 
+    svgd = svgd_bayesnn(X_train, y_train, batch_size = batch_size, n_hidden = n_hidden, max_iter = max_iter)
+    svgd_time = time.time() - start
+    svgd_rmse, svgd_ll = svgd.evaluation(X_test, y_test)
+    print 'SVGD', svgd_rmse, svgd_ll, svgd_time 

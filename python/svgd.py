@@ -1,12 +1,12 @@
 import numpy as np
 from scipy.spatial.distance import pdist, squareform
 
-class VGD():
+class SVGD():
 
     def __init__(self):
         pass
     
-    def vgd_kernel(self, theta, h = -1):
+    def svgd_kernel(self, theta, h = -1):
         sq_dist = pdist(theta)
         pairwise_dists = squareform(sq_dist)**2
         if h < 0: # if h < 0, using median trick
@@ -40,7 +40,7 @@ class VGD():
             
             lnpgrad = lnprob(theta)
             # calculating the kernel matrix
-            kxy, dxkxy = self.vgd_kernel(theta, h = -1)  
+            kxy, dxkxy = self.svgd_kernel(theta, h = -1)  
             grad_theta = (np.matmul(kxy, lnpgrad) + dxkxy) / x0.shape[0]  
             
             # adagrad 

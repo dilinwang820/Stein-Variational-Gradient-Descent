@@ -1,6 +1,6 @@
 import numpy as np
 import numpy.matlib as nm
-from vgd import VGD
+from svgd import SVGD
 
 class MVN:
     def __init__(self, mu, A):
@@ -17,6 +17,6 @@ if __name__ == '__main__':
     model = MVN(mu, A)
     
     x0 = np.random.normal(0,1, [10,2]);
-    theta = VGD().update(x0, model.dlnprob, n_iter=1000, stepsize=0.01)
+    theta = SVGD().update(x0, model.dlnprob, n_iter=1000, stepsize=0.01)
     
     print np.mean(theta,axis=0)

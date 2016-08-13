@@ -2,7 +2,7 @@ import numpy as np
 import scipy.io
 from sklearn.cross_validation import train_test_split
 import numpy.matlib as nm
-from vgd import VGD
+from svgd import SVGD
 
 '''
     Example of Bayesian Logistic Regression (the same setting as Gershman et al. 2012):
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     for i in range(M):
         theta0[i, :] = np.hstack([np.random.normal(0, np.sqrt(1 / alpha0[i]), d), np.log(alpha0[i])])
     
-    theta = VGD().update(x0=theta0, lnprob=model.dlnprob, bandwidth=-1, n_iter=5000, stepsize=0.05, alpha=0.9, debug=True)
+    theta = SVGD().update(x0=theta0, lnprob=model.dlnprob, bandwidth=-1, n_iter=5000, stepsize=0.05, alpha=0.9, debug=True)
     
     print '[accuracy, log-likelihood]'
     print model.evaluation(theta, X_test, y_test)

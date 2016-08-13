@@ -1,7 +1,7 @@
-function  theta = vgd(theta0, dlog_p, max_iter, master_stepsize, h, auto_corr, method)
+function  theta = svgd(theta0, dlog_p, max_iter, master_stepsize, h, auto_corr, method)
 
 %%%%%%%%
-% Bayesian Inference via Variational Gradient Descent
+% Bayesian Inference via Stein Variational Gradient Descent
 
 % input:
 %   -- theta0: initialization of particles, m * d matrix (m is the number of particles, d is the dimension)

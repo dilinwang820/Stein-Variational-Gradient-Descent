@@ -34,16 +34,16 @@ for i = 1:M
     theta0(i,:) = [normrnd(0, sqrt((1/alpha0(i))), 1, d), log(alpha0(i))]; % w and log(alpha)
 end
 
-% our variational gradient descent algorithm %
+% our stein variational gradient descent algorithm %
 
 % Searching best master_stepsize using a development set
 master_stepsize = 0.05;  
 
 tic
 dlog_p  = @(theta)dlog_p_lr(theta, X_train, y_train); % returns the first order derivative of the posterior distribution 
-theta_vgd = vgd(theta0, dlog_p, max_iter, master_stepsize);
+theta_svgd = svgd(theta0, dlog_p, max_iter, master_stepsize);
 time = toc;
 
 % evaluation
-[acc_vgd, llh_vgd] = bayeslr_evaluation(theta_vgd, X_test, y_test);
-fprintf('Result of VGD: testing accuracy: %f; testing loglikelihood: %f, running time: %fs\n', acc_vgd, llh_vgd, time);
+[acc_svgd, llh_svgd] = bayeslr_evaluation(theta_svgd, X_test, y_test);
+fprintf('Result of SVGD: testing accuracy: %f; testing loglikelihood: %f, running time: %fs\n', acc_svgd, llh_svgd, time);
