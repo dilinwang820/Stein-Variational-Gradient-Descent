@@ -14,9 +14,6 @@ function  theta = vgd(theta0, dlog_p, max_iter, master_stepsize, h, auto_corr, m
 
 % output:
 %   -- theta: a set of particles that approximates p(x)
-
-% Copyright (c) 2016,  Qiang Liu & Dilin Wang
-% All rights reserved.
 %%%%%%%%
 
 if nargin < 4; master_stepsize = 0.1; end;
