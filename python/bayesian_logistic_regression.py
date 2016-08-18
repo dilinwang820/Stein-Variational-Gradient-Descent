@@ -94,7 +94,7 @@ if __name__ == '__main__':
     for i in range(M):
         theta0[i, :] = np.hstack([np.random.normal(0, np.sqrt(1 / alpha0[i]), d), np.log(alpha0[i])])
     
-    theta = SVGD().update(x0=theta0, lnprob=model.dlnprob, bandwidth=-1, n_iter=5000, stepsize=0.05, alpha=0.9, debug=True)
+    theta = SVGD().update(x0=theta0, lnprob=model.dlnprob, bandwidth=-1, n_iter=6000, stepsize=0.05, alpha=0.9, debug=True)
     
     print '[accuracy, log-likelihood]'
     print model.evaluation(theta, X_test, y_test)
