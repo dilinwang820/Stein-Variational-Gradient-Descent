@@ -19,4 +19,5 @@ if __name__ == '__main__':
     x0 = np.random.normal(0,1, [10,2]);
     theta = SVGD().update(x0, model.dlnprob, n_iter=1000, stepsize=0.01)
     
-    print np.mean(theta,axis=0)
+    print "ground truth: ", mu
+    print "svgd: ", np.mean(theta,axis=0)
