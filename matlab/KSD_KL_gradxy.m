@@ -9,9 +9,6 @@ function [Akxy, info] = KSD_KL_gradxy(x, dlog_p, h)
 %    --Akxy: n*d matrix, \Phi(x) is our algorithm, which is a smooth
 %    function that characterizes the perturbation direction
 %    --info: kernel bandwidth
-
-% Copyright (c) 2016,  Qiang Liu & Dilin Wang
-% All rights reserved.
 %%%%%%%%%%%%%%%%%%%%%%
 
 if nargin < 3; h = -1; end % median trick as default
