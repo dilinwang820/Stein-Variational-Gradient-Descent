@@ -8,7 +8,7 @@ For more information, please visit our project website - [SVGD](http://www.cs.da
 ## Toy example on 1D Gaussian Mixture
 Toy example with 1D Gaussian mixture. The red dashed lines are the target density function and the solid green lines are the densities of the particles at different iterations of our algorithm (estimated using kernel density estimator).
 
-<img src="http://cs.dartmouth.edu/~dartml/1dgmm.gif" width="50%">
+<img src="data/1dgmm.gif" width="50%">
 
 ## Basic Usage
 ```python
