@@ -5,7 +5,7 @@ The package contains implementation of SVGD in both Matlab and Python language. 
 
 For more information, please visit our project website - [SVGD](http://www.cs.dartmouth.edu/~dartml/project.html?p=vgd).
 
-# A tensorflow-based implmentation and more examples & models. [tf-svgd](https://github.com/dilinwang820/SVGD)
+## A tensorflow-based implmentation and more examples & models. [tf-svgd](https://github.com/dilinwang820/SVGD)
 
 ## Toy example on 1D Gaussian Mixture
 Toy example with 1D Gaussian mixture. The red dashed lines are the target density function and the solid green lines are the densities of the particles at different iterations of our algorithm (estimated using kernel density estimator).
