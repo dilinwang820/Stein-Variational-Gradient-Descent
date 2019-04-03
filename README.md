@@ -29,6 +29,6 @@ theta = SVGD().update(x0, dlnprob, n_iter, stepsize)
 Qiang Liu and Dilin Wang. [Stein Variational Gradient Descent (SVGD): A General Purpose Bayesian Inference Algorithm](http://arxiv.org/abs/1608.04471). NIPS, 2016.
 
 ## Feedback
-Feedback is greatly appreciated. If you have any questions, comments, issues or anything else really, [shoot me an email](mailto:dilin.wang.gr@dartmouth.edu).
+Feedback is greatly appreciated. If you have any questions, comments, issues or anything else really, [shoot me an email](mailto:dilin@cs.utexas.edu).
 
 All rights reserved.
