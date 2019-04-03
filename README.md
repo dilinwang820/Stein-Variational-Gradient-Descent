@@ -1,9 +1,9 @@
 # Stein Variational Gradient Descent (SVGD)
 SVGD is a general purpose variational inference algorithm that forms a natural counterpart of gradient descent for optimization. SVGD iteratively transports a set of particles to match with the target distribution, by applying a form of functional gradient descent that minimizes the KL divergence.
 
-The package contains implementation of SVGD in both Matlab and Python language. Demos are also provided to reproduce the results in our paper. The Bayesian neural network example is based on [Theano](http://deeplearning.net/software/theano/).
+The package contains implementation of SVGD in both Matlab and Python language. Demos are also provided to reproduce the results in our paper. The Bayesian neural network example is based on Theano.
 
-For more information, please visit our project website - [SVGD](http://www.cs.dartmouth.edu/~dartml/project.html?p=vgd).
+For more information, please visit our project website - [SVGD](http://www.cs.utexas.edu/~qlearning/project.html?p=vgd).
 
 <!--
 ## A tensorflow-based implmentation and more examples & models: [tf-svgd](https://github.com/dilinwang820/SVGD)
